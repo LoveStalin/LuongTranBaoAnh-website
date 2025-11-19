@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday Bảo Anh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="password-screen" class="password-popup">
+  <div class="pass-box">
+    <h2>NHẬP PASS ĐI BẠN YÊU 💞</h2>
+    <div class="pass-content">
+      <img src="image/meme.jpg" alt="Cute image" class="pass-img">
+      <div class="pass-input">
+        <input type="password" id="pass-field" placeholder="•••••" maxlength="10" readonly>
+        <div class="num-pad">
+          <div class="num">1</div>
+          <div class="num">2</div>
+          <div class="num">3</div>
+          <div class="num">4</div>
+          <div class="num">5</div>
+          <div class="num">6</div>
+          <div class="num">7</div>
+          <div class="num">8</div>
+          <div class="num">9</div>
+          <div class="num ok">✔</div>
+          <div class="num">0</div>
+          <div class="num del">⌫</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="app">
+    <header class="top">
+      <h1 class="title">HAPPY BIRTHDAY,LƯƠNG TRẦN BẢO ANH! 🎉</h1>
+      <p class="subtitle">Một trang web nhỏ nhưng ẩn chứa trong đó biết bao tình cảm...từ người bạn bí ẩn.</p>
+      <div class="controls">
+        <button id="play-music" class="btn">Bật nhạc</button>
+        <button id="start-confetti" class="btn primary">Rải Pháo Hoa</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="secret-btn">
+  💌
+</div>
+<div id="secret-popup">
+  <div class="secret-box">
+    <h3>💗 Gửi Bảo Anh</h3>
+    <p id="myTypingText" data-fulltext="Tớ không dám nói ra..." class="secret-text">
+      Tớ không dám nói ra vì tớ ngại và tớ thấy bản thân chưa đáp ứng được tiêu chí của cậu
+      <br>
+      Nên tớ để vào đây vậy 🫩
+      <br><br>
+      Thật ra… tớ thấy Bảo Anh rất đáng yêu và xinh.
+      <br>
+      Không cần đồng ý,từ chối,trả lời và bình luận gì cả...  
+      <br>
+      Tớ chỉ muốn cậu biết điều rằng...Có người đang thích thầm cậu để phát triển💕
+    </p>
+    <button id="secret-close">Đóng lại</button>
+  </div>
+</div>
+     <canvas id="heartCanvas"></canvas>
+        <div class="hero-right">
+          <h2>Hôm nay là ngày đặc biệt của Bảo Anh 🥳</h2>
+          <p>Chúc cậu tuổi mới ngập tràn niềm vui, thực hiện được ước mơ và luôn cười tươi như dịp này nhé!</p>
+          <div class="gift-note">
+            <strong>Gợi ý quà:</strong> Wait for 7/8
+          </div>
+        </div>
+      </section>
+
+      <section id="messages" class="card">
+        <h3>Thông điệp từ Người Bí Ẩn</h3>
+        <div id="msgs" class="msgs">
+          <!-- sample messages -->
+          <div class="msg">Chúc mừng sinh nhật Bảo Anh! Mong những điều tốt đẹp nhất sẽ đến với cậu 💫</div>
+          <div class="msg">Luôn tươi, luôn chill, success trong mọi thứ nhé 🫶</div>
+          <div class="msg">Và sẽ mãi là ngoan xinh yêu trong lòng tớ-một người bí ẩn.</div>
+        </div>
+        <form id="msg-form" class="msg-form">
+          <input id="msg-input" placeholder="Viết lời chúc..." />
+          <button type="submit" class="btn small">Gửi</button>
+        </form>
+      </section>
+
+      <section id="gallery" class="card">
+        <h3>Ảnh kỉ niệm</h3>
+        <div class="gallery" id="gallery-grid">
+          <!-- placeholders -->
+          <div class="photo">+ Add</div>
+          <div class="photo">Ảnh1</div>
+          <div class="photo">Ảnh2</div>
+          <div class="photo">Ảnh3</div>
+        </div>
+      </section>
+
+      <section id="wishes" class="card">
+        <h3>Wishes Generator</h3>
+        <p>Bấm nút để tạo vài lời chúc cute auto.</p>
+        <div class="wish-controls">
+          <button id="gen-wish" class="btn">Tạo lời chúc</button>
+          <div id="wish-area" class="wish-area"></div>
+        </div>
+      </section>
+      <section id="countdown" class="card countdown-card">
+  <h3>🎉 Đếm ngược đến sinh nhật Bảo Anh 🎂</h3>
+  <div id="countdown-timer" class="countdown-timer">
+    <div class="time-box">
+      <span id="days">00</span>
+      <p>Ngày</p>
+    </div>
+    <div class="time-box">
+      <span id="hours">00</span>
+      <p>Giờ</p>
+    </div>
+    <div class="time-box">
+      <span id="minutes">00</span>
+      <p>Phút</p>
+    </div>
+    <div class="time-box">
+      <span id="seconds">00</span>
+      <p>Giây</p>
+    </div>
+  </div>
+  <p id="birthday-msg" class="birthday-msg"></p>
+</section>
+      <section id="daily-wish" class="card">
+  <h3>Lời chúc mỗi ngày dành cho Bảo Anh 💌</h3>
+  <p id="time-greet" class="wish-area"></p>
+</section>
+    </main>
+    <footer>
+      <small>Built with ❤️ for Bảo Anh — Unknown Person project</small>
+    </footer>
+  </div>
+
+  <!-- optional audio (YouTube embed approach or direct file). Using a short royalty-free track URL is recommended. -->
+  <audio id="bg-audio" loop src="audio/Music.mp3" type="audio/mp3"></audio>
+</body>
+</html>
+  <style>
+   /* styles.css — aesthetic: pastel + playful */
+/* Base */
+/* Popup password screen */
+.password-popup {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  font-family: "Comic Relief", sans-serif;
+}
+
+.pass-box {
+  background: #ffffff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 30px 40px;
+  text-align: center;
+  max-width: 500px;
+}
+
+.pass-box h2 {
+  margin-bottom: 20px;
+  color: #111;
+  letter-spacing: 1px;
+}
+
+.pass-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pass-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.pass-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#pass-field {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 20px;
+  border: 2px solid #ffc8de;
+  border-radius: 10px;
+  width: 140px;
+  background: #fff8fb;
+  margin-bottom: 10px;
+}
+
+.num-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  gap: 8px;
+}
+
+.num {
+  background: #ffeaf2;
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.num:hover {
+  background: #ffcee5;
+}
+
+.num.ok {
+  background: #b3ffb3;
+}
+
+.num.del {
+  background: #ffcaca;
+}
+body {
+  background: linear-gradient(180deg, #fff5f9 0%, #ffe9f3 100%);
+}
+:root{
+  --bg: linear-gradient(180deg,#fff7fb 0%, #f2f8ff 100%);
+  --card:  #fff9fc;
+  --muted: #6b7280;
+  --glass: rgba(255,255,255,0.7);
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(20,20,50,0.08);
+  font-synthesis: none;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{
+  margin:0;
+  background: var(--bg);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:20px;
+}
+
+/* layout */
+.top{
+  text-align:center;
+  margin-bottom:18px;
+}
+.title{
+  margin:6px 0;
+  font-size:clamp(24px,4vw,40px);
+  letter-spacing:1px;
+}
+.subtitle{color:var(--muted); margin:0 0 12px 0}
+
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.btn{
+  border:0;
+  background:white;
+  padding:8px 12px;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  font-weight:600;
+}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:white}
+.btn.danger{background:#ffefef;border:1px solid #ffd2d2}
+.btn.small{padding:6px 8px;font-size:14px}
+/* Floating letter button */
+#secret-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #ff4f92;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(255, 80, 140, 0.35);
+  cursor: pointer;
+  animation: floatBtn 2.5s infinite ease-in-out;
+  z-index: 9999;
+}
+
+@keyframes floatBtn {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Popup */
+#secret-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 230, 243, 0.75);
+  backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+/* Box */
+.secret-box {
+  width: 85%;
+  max-width: 350px;
+  background: white;
+  padding: 24px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 6px 30px rgba(255, 120, 180, 0.25);
+  animation: popupIn 0.35s ease;
+}
+
+/* Text */
+.secret-text {
+  margin-top: 10px;
+  color: #8a2e56;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Close button */
+#secret-close {
+  margin-top: 18px;
+  padding: 10px 18px;
+  border: none;
+  background: #ff4f92;
+  color: white;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 600;
+}
+/* Shake effect */
+@keyframes shake-soft {
+  0% { transform: translate(-1px, 1px); }
+  20% { transform: translate(2px, -1px); }
+  40% { transform: translate(-2px, 2px); }
+  60% { transform: translate(1px, -2px); }
+  80% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0,0); }
+}
+
+.shake-open {
+  animation: shake-soft 0.45s ease;
+}
+
+/* Falling hearts */
+.falling-heart {
+  position: absolute;
+  top: -20px;
+  font-size: 20px;
+  animation: heartFall 2.8s linear forwards;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+@keyframes heartFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(600px) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* For typing effect text */
+.secret-text {
+  white-space: pre-line;
+  min-height: 140px; /* tránh chữ giật */
+}
+/* Popup animation */
+@keyframes popupIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* main cards */
+main{max-width:1100px;margin:18px auto;display:grid;grid-template-columns:1fr;gap:16px}
+.card{
+  background:var(--card);
+  padding:18px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+
+/* hero */
+#heartCanvas {
+  display: block;
+  margin: 0 auto;
+  background: black;
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+}
+/* messages */
+.msgs{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.msg{padding:10px;border-radius:10px;background:linear-gradient(90deg,#ffffff,#fff7fb);border:1px solid rgba(0,0,0,0.03)}
+.msg-form{display:flex;gap:8px;margin-top:10px}
+.msg-form input{flex:1;padding:10px;border-radius:10px;border:1px solid #eee}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.photo{height:100px;border-radius:10px;background:linear-gradient(90deg,#fff,#fff7fb);display:flex;align-items:center;justify-content:center;border:2px dashed #ffe6f2;color:#ff6b9a;font-weight:700}
+
+/* wishes area */
+.wish-area{margin-top:10px;padding:10px;border-radius:10px;background:#fff8fb;color:#6b2147;min-height:48px}
+
+/* generator output */
+.generated{margin-top:12px;max-height:320px;overflow:auto;border-radius:10px;padding:10px;background:linear-gradient(180deg,#fff,#fcfcff)}
+.generated .line{padding:6px;border-bottom:1px dashed #eee;font-family:monospace;font-size:13px}
+
+/* footer */
+footer{text-align:center;margin-top:18px;color:var(--muted)}
+
+/* responsiveness */
+@media (max-width:800px){
+  .hero-card{flex-direction:column;align-items:stretch}
+  .hero-left{width:100%}
+}
+.candle::after {
+  animation: flicker 0.15s infinite alternate;
+}
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1) rotate(1deg); opacity: 0.9; }
+  to { transform: translateX(-50%) scale(1.1) rotate(-2deg); opacity: 1; }
+}
+.hidden {
+  display: none !important;
+}
+/* Heart rain effect */
+.heart {
+  position: fixed;
+  top: -10px;
+  font-size: 18px;
+  color: #ff5c8d;
+  opacity: 0.8;
+  animation: fall 4s linear forwards;
+  pointer-events: none;
+  z-index: 999;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+#daily-wish {
+  text-align: center;
+  background: linear-gradient(180deg,#fff5fa,#ffe9f3);
+  color: #832657;
+}
+
+#daily-wish h3 {
+  color: #ff4f92;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+#time-greet {
+  font-size: 17px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+/* Countdown Section */
+.countdown-card {
+  text-align: center;
+  background: linear-gradient(180deg,#fff7fb,#ffe9f3);
+  color: #832657;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.time-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 18px;
+  box-shadow: 0 4px 10px rgba(255, 100, 150, 0.15);
+  min-width: 70px;
+}
+
+.time-box span {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ff4f92;
+  font-family: 'Comic Relief', cursive;
+}
+
+.time-box p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #a34d78;
+}
+
+.birthday-msg {
+  margin-top: 14px;
+  font-weight: 600;
+  color: #ff4f92;
+  font-size: 18px;
+  animation: fadein 1s ease-in-out;
+}
+
+@keyframes fadein {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cấu trúc chung cho tim */
+.heart-frame {
+  position: absolute;
+  font-size: 20px;
+  color: #ff4f92;
+  animation: pulse 1.6s infinite ease-in-out;
+  opacity: 0.9;
+}
+
+/* Mỗi tim ở 1 góc khác nhau */
+.heart-top-left {
+  top: 10px;
+  left: 14px;
+  animation-delay: 0s;
+}
+
+.heart-top-right {
+  top: 10px;
+  right: 14px;
+  animation-delay: 0.4s;
+}
+
+.heart-bottom-left {
+  bottom: 10px;
+  left: 14px;
+  animation-delay: 0.8s;
+}
+
+.heart-bottom-right {
+  bottom: 10px;
+  right: 14px;
+  animation-delay: 1.2s;
+}
+
+/* Hiệu ứng tim đập */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+</style>
+<script>
+  // Password
+const passwordScreen = document.getElementById('password-screen');
+const passField = document.getElementById('pass-field');
+const nums = document.querySelectorAll('.num-pad .num');
+
+// đổi pass ở đây
+const CORRECT_PASS = "0708";
+
+nums.forEach(num => {
+  num.addEventListener('click', () => {
+    if (num.classList.contains('ok')) {
+      if (passField.value === CORRECT_PASS) {
+        passwordScreen.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      } else {
+        passField.value = "";
+        passField.placeholder = "Sai rồi hehe 😝";
+      }
+    } else if (num.classList.contains('del')) {
+      passField.value = passField.value.slice(0, -1);
+    } else {
+      passField.value += num.textContent;
+    }
+  });
+});
+// ========= SECRET POPUP EFFECTS (NO TEXT CHANGE) =========
+
+// Elements
+const btn = document.getElementById("secret-btn");
+const popup = document.getElementById("secret-popup");
+const closeBtn = document.getElementById("secret-close");
+const secretBox = document.querySelector(".secret-box")
+// ---Rung popup khi mở---
+function shakeBox() {
+  secretBox.classList.add("shake-open");
+  setTimeout(() => {
+    secretBox.classList.remove("shake-open");
+  }, 450);
+}
+
+// ---Tim rơi khi mở---
+function dropHearts() {
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("falling-heart");
+    heart.textContent = "💗";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.animationDelay = Math.random() * 1.5 + "s";
+
+    popup.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }
+}
+// ---Hiệu ứng đánh chữ---
+function typeText(element, speed = 30) {
+  const text = element.textContent;
+  let i = 0;
+  element.textContent = "";
+  const interval = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(typer);
+  }, speed);
+}
+// --- SAFE OPEN / CLOSE POPUP (paste đè chỗ cũ) ---
+const openBtn = document.getElementById('secret-btn');
+const popupEl = document.getElementById('secret-popup');
+const closeBtnEl = document.getElementById('secret-close');
+
+// helper: đảm bảo element tồn tại trước khi dùng
+if (!openBtn || !popupEl || !closeBtnEl || !secretBox) {
+  console.warn('Missing popup elements (secret-btn / secret-popup / secret-close / .secret-box). Check your HTML IDs/classes.');
+} else {
+
+  openBtn.addEventListener('click', () => {
+    // show popup
+    popupEl.style.display = 'flex';
+
+    // shake + hearts
+    shakeBox();    // hàm đã có trong file của mày
+    dropHearts();  // hàm đã có trong file của mày
+
+    // typing: tìm element chứa text (id hoặc class)
+    const textEl = document.getElementById('myTypingText') || document.querySelector('.secret-text');
+    if (textEl) {
+      // reset mỗi lần mở, lưu text gốc vào data-fulltext (recommended)
+      const original = textEl.getAttribute('data-fulltext') || textEl.textContent;
+      // ensure the attribute exists so we can restore on close
+      if (!textEl.getAttribute('data-fulltext')) textEl.setAttribute('data-fulltext', original);
+      // gọi typing (hàm typeText(element, speed) phải có trong file)
+      typeText(textEl, 28);
+    }
+  });
+
+  closeBtnEl.addEventListener('click', () => {
+    // hide popup
+    popupEl.style.display = 'none';
+
+    // remove any falling hearts left in DOM
+    const leftover = popupEl.querySelectorAll('.falling-heart');
+    leftover.forEach(h => h.remove());
+
+    // restore text to original (so next open types from start)
+    const textEl = document.getElementById('myTypingText') || document.querySelector('.secret-text');
+    if (textEl) {
+      const original = textEl.getAttribute('data-fulltext');
+      if (original !== null) textEl.textContent = original;
+    }
+  });
+}
+// chặn scroll khi chưa vào
+document.body.style.overflow = 'hidden';
+  /* script.js — logic for interactions */
+document.addEventListener('DOMContentLoaded', ()=>{
+const galleryGrid = document.getElementById('gallery-grid');
+
+galleryGrid.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('photo') && e.target.textContent.includes('+ Add')) {
+    // tạo input upload tạm
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (ev) => {
+      const file = ev.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (r) => {
+          const newPhoto = document.createElement('div');
+          newPhoto.className = 'photo';
+          newPhoto.style.background = `url(${r.target.result}) center/cover no-repeat`;
+          galleryGrid.insertBefore(newPhoto, galleryGrid.firstChild);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  }
+});
+
+  // basic DOM refs
+  const msgForm = document.getElementById('msg-form');
+  const msgInput = document.getElementById('msg-input');
+  const msgs = document.getElementById('msgs');
+  const genWishBtn = document.getElementById('gen-wish');
+  const wishArea = document.getElementById('wish-area');
+  const startConfetti = document.getElementById('start-confetti');
+  const massGenerate = document.getElementById('mass-generate');
+  const cake = document.getElementById('cake');
+  const toggleCake = document.getElementById('toggle-cake');
+  const playMusic = document.getElementById('play-music');
+  const bgAudio = document.getElementById('bg-audio');
+
+  // sample wish parts
+  const wishStarts = [
+    "Chúc mừng sinh nhật!", "Happy b-day!", "Mừng tuổi mới!",
+    "Ngày đặc biệt của cậu", "Gửi tới Bảo Anh những lời chúc","Sinh nhật Bảo Anh"
+  ];
+  const wishMiddles = [
+    "tuổi mới thật rực rỡ", "mọi điều suôn sẻ", "những thành công rực rỡ",
+    "sức khoẻ dồi dào", "được yêu thương thật nhiều","Học giỏi,luôn xinh đẹp","Hạnh phúc"
+  ];
+  const wishEnds = [
+    "❤️", "🎉", "✨", "🥳", "🤍"
+  ];
+
+  // messages form
+  msgForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const v = msgInput.value.trim();
+    if(!v) return;
+    const el = document.createElement('div');
+    el.className = 'msg';
+    el.textContent = v + " — từ bạn";
+    msgs.prepend(el);
+    msgInput.value = '';
+  });
+
+  // wish generator
+  genWishBtn.addEventListener('click', ()=>{
+    const s = wishStarts[Math.floor(Math.random()*wishStarts.length)];
+    const m = wishMiddles[Math.floor(Math.random()*wishMiddles.length)];
+    const e = wishEnds[Math.floor(Math.random()*wishEnds.length)];
+    const line = `${s} Mong bạn ${m} ${e}`;
+    const p = document.createElement('div');
+    p.textContent = line;
+    wishArea.prepend(p);
+    // little sparkle animation
+    p.animate([{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}], {duration:350, easing:'ease-out'});
+  });
+// 💖 Moving Neon Heart
+const canvas = document.getElementById('heartCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 400;
+canvas.height = 400;
+
+let t = 0;
+
+function drawHeartPath() {
+  ctx.beginPath();
+  for (let i = 0; i < Math.PI * 2; i += 0.02) {
+    const x = 16 * Math.pow(Math.sin(i), 3);
+    const y = 13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i);
+    ctx.lineTo(200 + x * 10, 200 - y * 10);
+  }
+  ctx.closePath();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // glow background fade
+  ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // draw static faint heart outline
+  ctx.save();
+  ctx.strokeStyle = "rgba(255,100,200,0.2)";
+  ctx.lineWidth = 1.5;
+  drawHeartPath();
+  ctx.stroke();
+  ctx.restore();
+
+  // draw glowing particles moving around heart
+  for (let i = 0; i < 40; i++) {
+    const offset = (t / 100 + i / 40) * Math.PI * 2;
+    const x = 16 * Math.pow(Math.sin(offset), 3);
+    const y = 13 * Math.cos(offset) - 5 * Math.cos(2 * offset) - 2 * Math.cos(3 * offset) - Math.cos(4 * offset);
+    const px = 200 + x * 10;
+    const py = 200 - y * 10;
+
+    const hue = 320 + Math.sin(offset * 2) * 30; // shifting color hue
+    ctx.beginPath();
+    ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${hue}, 100%, 65%)`;
+    ctx.shadowColor = `hsl(${hue}, 100%, 70%)`;
+    ctx.shadowBlur = 20;
+    ctx.fill();
+  }
+
+  t += 0.6;
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+  // confetti simple implementation (vanilla)
+  function simpleConfetti() {
+    const count = 120;
+    for(let i=0;i<count;i++){
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      const size = Math.random()*10 + 6;
+      c.style.position = 'fixed';
+      c.style.left = Math.random()*100 + '%';
+      c.style.top = '-10%';
+      c.style.width = size + 'px';
+      c.style.height = (size*1.6) + 'px';
+      c.style.background = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
+      c.style.opacity = Math.random()*0.9 + 0.6;
+      c.style.borderRadius = '3px';
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      c.style.zIndex = 9999;
+      c.style.pointerEvents = 'none';
+      document.body.appendChild(c);
+      // animate
+      const fall = c.animate([
+        {transform: c.style.transform, top: '-10%'},
+        {transform: c.style.transform + ' translateY(120vh) rotate(360deg)', top: '120%'}
+      ], {duration: 2000 + Math.random()*2000, easing:'cubic-bezier(.2,.7,.2,1)'});
+      fall.onfinish = ()=> {
+        c.remove();
+      }
+    }
+  }
+  startConfetti.addEventListener('click', ()=> simpleConfetti());
+  // 💖 Heart rain effect
+function heartRain() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.textContent = '💖';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = (Math.random() * 16 + 12) + 'px';
+  heart.style.opacity = Math.random() * 0.6 + 0.4;
+  document.body.appendChild(heart);
+
+  // Remove after animation
+  setTimeout(() => heart.remove(), 4000);
+}
+
+// tạo mưa tim nhẹ nhàng mỗi vài trăm ms
+setInterval(heartRain, 250);
+
+  // audio control (user should provide a src or the file by dropping into folder)
+  playMusic.addEventListener('click', ()=>{
+    // if no src, open a tiny playlist suggestion modal (simple)
+    if(!bgAudio.src){
+      const sample = prompt('Dán URL file mp3 (direct link) hoặc YouTube link (will try to open) — hoặc bỏ qua để không bật nhạc:','');
+      if(!sample) return;
+      if(sample.includes('youtube.com') || sample.includes('youtu.be')){
+        window.open(sample,'_blank');
+        return;
+      } else {
+        bgAudio.src = sample;
+      }
+    }
+    if(bgAudio.paused) {
+      bgAudio.play().catch(()=>alert('Không thể play tự động — do trình duyệt chặn. Hãy click lại hoặc cung cấp link hợp lệ.'));
+      playMusic.textContent = 'Tắt nhạc';
+    } else {
+      bgAudio.pause();
+      playMusic.textContent = 'Bật nhạc';
+    }
+  });
+
+  // little easter: keyboard shortcut for confetti
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'c' && (e.ctrlKey || e.metaKey)){
+      simpleConfetti();
+    }
+  });
+
+  // small accessibility: focus first control
+  document.querySelector('.controls .btn')?.focus();
+});
+// 💌 Lời chúc theo thời gian trong ngày
+function dailyWish() {
+  const greetEl = document.getElementById('time-greet');
+  const now = new Date();
+  const hour = now.getHours();
+  let message = "";
+
+  if (hour >= 5 && hour < 11) {
+    message = "Chào buổi sáng, Bảo Anh ☀️! Chúc cậu một ngày mới tràn năng lượng, luôn mỉm cười và đừng quên ăn sáng đấy nhé 💕";
+  } 
+  else if (hour >= 11 && hour < 17) {
+    message = "Buổi chiều vui vẻ nha Bảo Anh 🌸! Nhớ uống đủ nước, ăn đủ no, đừng học căng quá, nhớ nghỉ giữa giờ nha 💖";
+  } 
+  else if (hour >= 17 && hour < 21) {
+    message = "Tối an lành nè 🌆! Hy vọng Bảo Anh có buổi tối thật chill, ăn ngon và làm bài thiệc thư giãn nhaaaa ✨";
+  } 
+  else {
+    message = "Khuya rồi đó Bảo Anh ơiii 🌙💤 — ngủ sớm đi nha, sáng mai còn dậy sớm nè, đừng thức khuya làm bài tập nữa, không tốt cho sức khỏe đâu 😴💗";
+  }
+  greetEl.textContent = message;
+}
+
+// chạy 1 lần khi load
+dailyWish();
+
+// cập nhật lại mỗi phút
+setInterval(dailyWish, 60000);
+// 🎂 Countdown to Bảo Anh's Birthday
+function updateCountdown() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  let target = new Date(`${currentYear}-08-07T00:00:00`);
+  
+  // Nếu sinh nhật năm nay qua rồi => đếm cho năm sau
+  if (now > target) {
+    target = new Date(`${currentYear + 1}-08-07T00:00:00`);
+  }
+
+  const diff = target - now;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('days').textContent = String(days).padStart(2, '0');
+  document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+  const msg = document.getElementById('birthday-msg');
+  if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+    msg.textContent = "🎉 Hôm nay là sinh nhật của Bảo Anh rồi đó! Chúc mừng sinh nhật nhaaa 🥳💖";
+  } else {
+    msg.textContent = `Còn ${days} ngày nữa là tới sinh nhật của Bảo Anh đó 😚`;
+  }
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+document.querySelectorAll(".card").forEach(card => {
+  const hearts = [
+    { class: "heart-top-left", icon: "💖" },
+    { class: "heart-top-right", icon: "💗" },
+    { class: "heart-bottom-left", icon: "💕" },
+    { class: "heart-bottom-right", icon: "💞" },
+  ];
+
+  hearts.forEach(h => {
+    const span = document.createElement("span");
+    span.classList.add("heart-frame", h.class);
+    span.textContent = h.icon;
+    card.appendChild(span);
+  });
+});
+
+</script>
