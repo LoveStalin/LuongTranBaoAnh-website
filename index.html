@@ -41,6 +41,9 @@
         <button id="play-music" class="btn">Bật nhạc</button>
         <button id="start-confetti" class="btn primary">Rải Pháo Hoa</button>
       </div>
+      <button id="darkModeToggle" class="dark-btn">
+    🌙
+</button>
     </header>
 
     <main>
@@ -50,7 +53,11 @@
 <div id="secret-popup">
   <div class="secret-box">
     <h3>💗 Gửi Bảo Anh</h3>
-    <p id="myTypingText" data-fulltext="Tớ không dám nói ra..." class="secret-text">
+    <p id="myTypingText" data-fulltext="Tớ không dám nói ra vì tớ ngại và tớ thấy bản thân chưa đáp ứng được tiêu chí của cậu
+      Nên tớ để vào đây vậy 🫩
+      Thật ra… tớ thấy Bảo Anh rất đáng yêu và xinh.
+      Không cần đồng ý,từ chối,trả lời và bình luận gì cả...  
+      Tớ chỉ muốn cậu biết điều rằng...Có người đang thích thầm cậu để phát triển💕" class="secret-text">
       Tớ không dám nói ra vì tớ ngại và tớ thấy bản thân chưa đáp ứng được tiêu chí của cậu
       <br>
       Nên tớ để vào đây vậy 🫩
@@ -278,7 +285,7 @@ body{
   cursor:pointer;
   font-weight:600;
 }
-.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:white}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:black}
 .btn.danger{background:#ffefef;border:1px solid #ffd2d2}
 .btn.small{padding:6px 8px;font-size:14px}
 /* Floating letter button */
@@ -423,7 +430,7 @@ main{max-width:1100px;margin:18px auto;display:grid;grid-template-columns:1fr;ga
 }
 /* messages */
 .msgs{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.msg{padding:10px;border-radius:10px;background:linear-gradient(90deg,#ffffff,#fff7fb);border:1px solid rgba(0,0,0,0.03)}
+.msg{padding:10px;border-radius:10px;background:linear-gradient(90deg,#c22c77,#c22c77);border:1px solid rgba(0,0,0,0.03)}
 .msg-form{display:flex;gap:8px;margin-top:10px}
 .msg-form input{flex:1;padding:10px;border-radius:10px;border:1px solid #eee}
 
@@ -594,6 +601,69 @@ footer{text-align:center;margin-top:18px;color:var(--muted)}
     opacity: 1;
   }
 }
+/* Nút toggle */
+.dark-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ecb4ff;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.3s;
+  box-shadow: 0 0 12px rgba(255, 182, 255, 0.6);
+  z-index: 9999;
+}
+
+.dark-btn:hover {
+  transform: scale(1.1);
+}
+
+/* --- DARK MODE CORE --- */
+body.dark {
+  background: linear-gradient(180deg, #18001a, #2d0033 60%, #3c0047);
+  color: #ffdfff;
+  transition: background 0.5s ease, color 0.3s ease;
+}
+
+/* Màu cho các thẻ (card) */
+body.dark .card,
+body.dark .memory-box,
+body.dark .secret-box,
+body.dark .popup-box,
+body.dark .message-box {
+  background: rgba(255, 160, 255, 0.08);
+  border: 1px solid rgba(255, 130, 255, 0.3);
+  box-shadow: 0 0 18px rgba(255, 100, 255, 0.2);
+  transition: 0.4s;
+}
+
+/* Heading đổi màu */
+body.dark h1, 
+body.dark h2, 
+body.dark h3 {
+  color: #ffb6ff;
+}
+
+/* Link / icon / button */
+body.dark a, 
+body.dark i {
+  color: #ff9dff !important;
+}
+
+body.dark button {
+  background: #ff74d9 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 0 12px rgba(255, 140, 255, 0.4);
+}
+
+/* Soft fade */
+body.dark * {
+  transition: 0.25s ease;
+}
 </style>
 <script>
   // Password
@@ -661,6 +731,32 @@ function typeText(element, speed = 30) {
     if (i >= text.length) clearInterval(typer);
   }, speed);
 }
+// safe typing: clears any previous interval and never appends undefined
+function typeText(element, speed = 30) {
+  // get text from data attribute (fallback to element.textContent)
+  const full = element.getAttribute('data-fulltext') ?? element.textContent ?? "";
+  // cancel any previous typing interval attached to this element
+  if (element._typingInterval) {
+    clearInterval(element._typingInterval);
+    element._typingInterval = null;
+  }
+
+  element.textContent = "";
+  let i = 0;
+
+  element._typingInterval = setInterval(() => {
+    // guard: stop if out of range
+    if (i >= full.length) {
+      clearInterval(element._typingInterval);
+      element._typingInterval = null;
+      return;
+    }
+
+    // append the next character
+    element.textContent += full[i];
+    i++;
+  }, speed);
+}
 // --- SAFE OPEN / CLOSE POPUP (paste đè chỗ cũ) ---
 const openBtn = document.getElementById('secret-btn');
 const popupEl = document.getElementById('secret-popup');
@@ -676,8 +772,8 @@ if (!openBtn || !popupEl || !closeBtnEl || !secretBox) {
     popupEl.style.display = 'flex';
 
     // shake + hearts
-    shakeBox();    // hàm đã có trong file của mày
-    dropHearts();  // hàm đã có trong file của mày
+    shakeBox();    
+    dropHearts();  
 
     // typing: tìm element chứa text (id hoặc class)
     const textEl = document.getElementById('myTypingText') || document.querySelector('.secret-text');
@@ -994,5 +1090,16 @@ document.querySelectorAll(".card").forEach(card => {
     card.appendChild(span);
   });
 });
+const toggleDark = document.getElementById("darkModeToggle");
 
+toggleDark.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    // đổi icon mặt trăng <-> mặt trời
+    if (document.body.classList.contains("dark")) {
+        toggleDark.textContent = "☀️";
+    } else {
+        toggleDark.textContent = "🌙";
+    }
+});
 </script>
