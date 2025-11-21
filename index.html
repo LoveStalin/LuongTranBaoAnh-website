@@ -726,22 +726,22 @@ body.gradient-mode {
 }
 #settingsPanel {
   position: fixed;
-  bottom: 20px;
+  top: 70px;
   right: 20px;
-  background: rgba(255, 210, 255, 0.8);
+  background: rgba(255, 210, 255, 0.85);
   padding: 15px;
   border-radius: 15px;
   backdrop-filter: blur(10px);
   display: none;
   flex-direction: column;
   gap: 8px;
-  z-index: 99999;
+  z-index: 999999;
 }
 
 #openSettings {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 20px;
+  right: 70px;
   border: none;
   background: #ffb3ff;
   padding: 12px 15px;
@@ -749,10 +749,52 @@ body.gradient-mode {
   font-size: 20px;
   cursor: pointer;
   z-index: 999999;
+  transition: transform 0.2s ease;
 }
+
+#openSettings:active {
+  transform: scale(0.9);
+}
+/* Animation trượt xuống */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#settingsPanel.show {
+  display: flex !important;
+  animation: slideDown 0.25s ease-out;
+}
+
 .tilt-card {
   transition: transform 0.2s ease;
   transform-style: preserve-3d;
+}
+button {
+  position: relative;
+  overflow: hidden; /* để ripple không tràn */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 150, 255, 0.6); /* hồng pastel */
+  transform: scale(0);
+  animation: rippleEffect 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 </style>
 <script>
@@ -1234,7 +1276,11 @@ function drawSparkles() {
 drawSparkles();
 document.body.classList.add("glow-mode");
 document.body.classList.add("gradient-mode");
+window.lightTrailEnabled = true; // mặc định bật
+
 function createLightTrail(x, y) {
+  if (!window.lightTrailEnabled) return; // nếu tắt thì không vẽ
+
   const dot = document.createElement("div");
   dot.className = "light-trail";
   dot.style.left = x + "px";
@@ -1243,58 +1289,92 @@ function createLightTrail(x, y) {
 
   setTimeout(() => dot.remove(), 600);
 }
-
-// PC
+//PC
 document.addEventListener("mousemove", (e) => {
   createLightTrail(e.clientX, e.clientY);
 });
-
-// Mobile
+//Mobile
 document.addEventListener("touchmove", (e) => {
   let touch = e.touches[0];
   createLightTrail(touch.clientX, touch.clientY);
 });
-document.getElementById("toggleTilt").addEventListener("change", (e) => {
-  window.tiltEnabled = e.target.checked;
-});
-document.querySelectorAll(".card").forEach(card => {
-  card.classList.add("tilt-card");
+window.tiltEnabled = true;
 
-  card.addEventListener("mousemove", (e) => {
-    let rect = card.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    let y = e.clientY - rect.top;
+function enableGyroTilt() {
+  // Kiểm tra permission cho iOS
+  if (typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function") {
 
-    let rotateX = (y - rect.height / 2) / 15;
-    let rotateY = (rect.width / 2 - x) / 15;
+    DeviceOrientationEvent.requestPermission()
+      .then(response => {
+        if (response === "granted") {
+          window.addEventListener("deviceorientation", handleGyro);
+        }
+      })
+      .catch(console.error);
 
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  } else {
+    // Android không cần xin permission
+    window.addEventListener("deviceorientation", handleGyro);
+  }
+}
+
+function handleGyro(e) {
+  if (!window.tiltEnabled) return;
+
+  let x = e.beta;   // nghiêng trước–sau
+  let y = e.gamma;  // nghiêng trái–phải
+
+  // Giới hạn cho đỡ điên
+  if (x > 30) x = 30;
+  if (x < -30) x = -30;
+  if (y > 30) y = 30;
+  if (y < -30) y = -30;
+
+  // Mượt hơn
+  let tiltX = x / 6;
+  let tiltY = y / 6;
+
+  document.querySelectorAll(".card").forEach(card => {
+    card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
   });
+}
 
-  card.addEventListener("mouseleave", () => {
+// Khi tắt → reset về thẳng đứng
+function resetTilt() {
+  document.querySelectorAll(".card").forEach(card => {
     card.style.transform = "rotateX(0) rotateY(0)";
   });
-});
+}
 
-// Điện thoại
-window.addEventListener("deviceorientation", (e) => {
-  let x = e.beta / 10;
-  let y = e.gamma / 10;
+// ★ Toggle từ settings panel
+document.getElementById("toggleTilt").addEventListener("change", (e) => {
+  window.tiltEnabled = e.target.checked;
 
-  document.querySelectorAll(".card").forEach(c => {
-    if (window.tiltEnabled) {
-      c.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
-    }
-  });
+  if (!window.tiltEnabled) {
+    resetTilt();
+  } 
 });
+ 
+// Kích hoạt gyro khi web load
+enableGyroTilt();
 const settingsPanel = document.getElementById("settingsPanel");
 const openSettings = document.getElementById("openSettings");
-
 openSettings.addEventListener("click", () => {
-  settingsPanel.style.display =
-    settingsPanel.style.display === "flex" ? "none" : "flex";
+  if (settingsPanel.classList.contains("show")) {
+    // Đóng panel
+    settingsPanel.classList.remove("show");
+    setTimeout(() => {
+      settingsPanel.style.display = "none";
+    }, 200);
+  } else {
+    // Mở panel
+    settingsPanel.style.display = "flex";
+    requestAnimationFrame(() => {
+      settingsPanel.classList.add("show");
+    });
+  }
 });
-
 // Sparkles
 document.getElementById("toggleSparkle").addEventListener("change", (e) => {
   document.getElementById("sparkleCanvas").style.display = e.target.checked ? "block" : "none";
@@ -1312,9 +1392,22 @@ document.getElementById("toggleGradient").addEventListener("change", (e) => {
 // Light Trail
 document.getElementById("toggleTrail").addEventListener("change", (e) => {
   window.lightTrailEnabled = e.target.checked;
-// 3D Tilt
-document.getElementById("toggleTilt").addEventListener("change", (e) => {
-  window.tiltEnabled = e.target.checked;
 });
+document.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", function(e) {
+    const circle = document.createElement("span");
+    circle.classList.add("ripple");
+
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+
+    circle.style.width = circle.style.height = size + "px";
+    circle.style.left = e.clientX - rect.left - size / 2 + "px";
+    circle.style.top = e.clientY - rect.top - size / 2 + "px";
+
+    this.appendChild(circle);
+
+    setTimeout(() => circle.remove(), 600);
+  });
 });
 </script>
