@@ -1310,13 +1310,13 @@ document.addEventListener("touchmove", (e) => {
   let touch = e.touches[0];
   createLightTrail(touch.clientX, touch.clientY);
 });
+//3D gyro
 window.tiltEnabled = true;
-
 function handleGyro(e) {
   if (!window.tiltEnabled) return;
 
-  let x = e.beta; 
-  let y = e.gamma;
+  let x = e.beta ; 0
+  let y = e.gamma; 0
 
   if (x > 30) x = 30;
   if (x < -30) x = -30;
@@ -1330,12 +1330,13 @@ function handleGyro(e) {
     card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
   });
 }
-
+function enableGyro () { 
 document.getElementById("enableGyroBtn").addEventListener("click", () => {
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
     // iOS
     DeviceOrientationEvent.requestPermission().then(state => {
       if (state === "granted") {
+        DocumentIosPermit();
         window.addEventListener("deviceorientation", handleGyro);
         alert("Đã bật nghiêng 3D");
       } else {
@@ -1348,7 +1349,7 @@ document.getElementById("enableGyroBtn").addEventListener("click", () => {
     alert("Đã bật nghiêng 3D!");
   }
 });
-
+}
 // Toggle từ settings
 document.getElementById("toggleTilt").addEventListener("change", (e) => {
   window.tiltEnabled = e.target.checked;
