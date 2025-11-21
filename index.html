@@ -45,6 +45,7 @@
       <button id="darkModeToggle" class="dark-btn">
     🌙
 </button>
+<button id="enableGyroBtn">Bật nghiêng 3D</button>
     </header>
 
     <main>
@@ -297,6 +298,17 @@ body{
 .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:black}
 .btn.danger{background:#ffefef;border:1px solid #ffd2d2}
 .btn.small{padding:6px 8px;font-size:14px}
+#enableGyroBtn {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  padding: 12px 18px;
+  background: #ff9dff;
+  color: white;
+  border-radius: 12px;
+  border: none;
+  z-index: 999999;
+}
 /* Floating letter button */
 #secret-btn {
   position: fixed;
@@ -1300,38 +1312,17 @@ document.addEventListener("touchmove", (e) => {
 });
 window.tiltEnabled = true;
 
-function enableGyroTilt() {
-  // Kiểm tra permission cho iOS
-  if (typeof DeviceOrientationEvent !== "undefined" &&
-      typeof DeviceOrientationEvent.requestPermission === "function") {
-
-    DeviceOrientationEvent.requestPermission()
-      .then(response => {
-        if (response === "granted") {
-          window.addEventListener("deviceorientation", handleGyro);
-        }
-      })
-      .catch(console.error);
-
-  } else {
-    // Android không cần xin permission
-    window.addEventListener("deviceorientation", handleGyro);
-  }
-}
-
 function handleGyro(e) {
   if (!window.tiltEnabled) return;
 
-  let x = e.beta;   // nghiêng trước–sau
-  let y = e.gamma;  // nghiêng trái–phải
+  let x = e.beta; 
+  let y = e.gamma;
 
-  // Giới hạn cho đỡ điên
   if (x > 30) x = 30;
   if (x < -30) x = -30;
   if (y > 30) y = 30;
   if (y < -30) y = -30;
 
-  // Mượt hơn
   let tiltX = x / 6;
   let tiltY = y / 6;
 
@@ -1340,24 +1331,34 @@ function handleGyro(e) {
   });
 }
 
-// Khi tắt → reset về thẳng đứng
-function resetTilt() {
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.transform = "rotateX(0) rotateY(0)";
-  });
-}
+document.getElementById("enableGyroBtn").addEventListener("click", () => {
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    // iOS
+    DeviceOrientationEvent.requestPermission().then(state => {
+      if (state === "granted") {
+        window.addEventListener("deviceorientation", handleGyro);
+        alert("Đã bật nghiêng 3D");
+      } else {
+        alert("Bảo Anh cần cho phép truy cập cảm biến.");
+      }
+    });
+  } else {
+    // Android
+    window.addEventListener("deviceorientation", handleGyro);
+    alert("Đã bật nghiêng 3D!");
+  }
+});
 
-// ★ Toggle từ settings panel
+// Toggle từ settings
 document.getElementById("toggleTilt").addEventListener("change", (e) => {
   window.tiltEnabled = e.target.checked;
 
   if (!window.tiltEnabled) {
-    resetTilt();
-  } 
+    document.querySelectorAll(".card").forEach(card => {
+      card.style.transform = "none";
+    });
+  }
 });
- 
-// Kích hoạt gyro khi web load
-enableGyroTilt();
 const settingsPanel = document.getElementById("settingsPanel");
 const openSettings = document.getElementById("openSettings");
 openSettings.addEventListener("click", () => {
