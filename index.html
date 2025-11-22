@@ -1318,6 +1318,9 @@ document.addEventListener("touchmove", (e) => {
 ///3D gyro
 window.tiltEnabled = true;
 // ----- ĐIỀU CHỈNH GYRO -----
+window.addEventListener("deviceorientation", (e) => {
+  console.log("LOG TEST → beta:", e.beta, " gamma:", e.gamma);
+});
 function handleGyro(e) {
   if (!window.tiltEnabled) return;
 
@@ -1427,3 +1430,4 @@ document.querySelectorAll("button").forEach(btn => {
   });
 });
 </script>
+<script src="https://jsconsole.com/log.js"></script>
