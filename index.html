@@ -574,8 +574,11 @@ footer{text-align:center;margin-top:18px;color:var(--muted)}
 }
 .card {
   position: relative;
-  overflow: hidden;
+  overflow: visible;  
+  transform-style: preserve-3d;
+  will-change: transform;
 }
+
 
 /* Cấu trúc chung cho tim */
 .heart-frame {
