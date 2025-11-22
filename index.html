@@ -1232,6 +1232,7 @@ document.querySelectorAll(".card").forEach(card => {
     card.appendChild(span);
   });
 });
+///DARK MODE
 const toggleDark = document.getElementById("darkModeToggle");
 
 toggleDark.addEventListener("click", () => {
@@ -1244,6 +1245,7 @@ toggleDark.addEventListener("click", () => {
         toggleDark.textContent = "🌙";
     }
 });
+///Sparkles JS
 const sparkleCanvas = document.getElementById("sparkleCanvas");
 const ctx = sparkleCanvas.getContext("2d");
 let W, H;
@@ -1310,47 +1312,59 @@ document.addEventListener("touchmove", (e) => {
   let touch = e.touches[0];
   createLightTrail(touch.clientX, touch.clientY);
 });
-//3D gyro
+///3D gyro
 window.tiltEnabled = true;
+
+// ----- ĐIỀU CHỈNH GYRO -----
 function handleGyro(e) {
   if (!window.tiltEnabled) return;
 
-  let x = e.beta ; 0
-  let y = e.gamma; 0
+  let x = e.beta || 0;
+  let y = e.gamma || 0;
 
-  if (x > 30) x = 30;
-  if (x < -30) x = -30;
-  if (y > 30) y = 30;
-  if (y < -30) y = -30;
+  // Limit movement
+  x = Math.max(-30, Math.min(30, x));
+  y = Math.max(-30, Math.min(30, y));
 
-  let tiltX = x / 6;
-  let tiltY = y / 6;
+  const tiltX = x / 6;
+  const tiltY = y / 6;
 
   document.querySelectorAll(".card").forEach(card => {
     card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
   });
 }
-function enableGyro () { 
-document.getElementById("enableGyroBtn").addEventListener("click", () => {
-  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+
+// ----- KÍCH HOẠT GYRO -----
+function enableGyro() {
+  const btn = document.getElementById("enableGyroBtn");
+
+  btn.addEventListener("click", () => {
+
     // iOS
-    DeviceOrientationEvent.requestPermission().then(state => {
-      if (state === "granted") {
-        DocumentIosPermit();
-        window.addEventListener("deviceorientation", handleGyro);
-        alert("Đã bật nghiêng 3D");
-      } else {
-        alert("Bảo Anh cần cho phép truy cập cảm biến.");
-      }
-    });
-  } else {
-    // Android
-    window.addEventListener("deviceorientation", handleGyro);
-    alert("Đã bật nghiêng 3D!");
-  }
-});
+    if (typeof DeviceOrientationEvent !== "undefined" &&
+        typeof DeviceOrientationEvent.requestPermission === "function") {
+
+      DeviceOrientationEvent.requestPermission().then(result => {
+        if (result === "granted") {
+          window.addEventListener("deviceorientation", handleGyro);
+          alert("Đã bật nghiêng 3D!");
+        } else {
+          alert("Bảo Anh cần cho phép truy cập cảm biến.");
+        }
+      });
+
+    } else {
+      // Android
+      window.addEventListener("deviceorientation", handleGyro);
+      alert("Đã bật nghiêng 3D!");
+    }
+  });
 }
-// Toggle từ settings
+
+//Gọi hàm Gyro
+enableGyro();
+
+//-----TOGGLE TILT-----
 document.getElementById("toggleTilt").addEventListener("change", (e) => {
   window.tiltEnabled = e.target.checked;
 
@@ -1360,39 +1374,39 @@ document.getElementById("toggleTilt").addEventListener("change", (e) => {
     });
   }
 });
-enableGyro()
+///Setting Panels
 const settingsPanel = document.getElementById("settingsPanel");
 const openSettings = document.getElementById("openSettings");
 openSettings.addEventListener("click", () => {
   if (settingsPanel.classList.contains("show")) {
-    // Đóng panel
+    //Đóng panel
     settingsPanel.classList.remove("show");
     setTimeout(() => {
       settingsPanel.style.display = "none";
     }, 200);
   } else {
-    // Mở panel
+    //Mở panel
     settingsPanel.style.display = "flex";
     requestAnimationFrame(() => {
       settingsPanel.classList.add("show");
     });
   }
 });
-// Sparkles
+//Sparkles
 document.getElementById("toggleSparkle").addEventListener("change", (e) => {
   document.getElementById("sparkleCanvas").style.display = e.target.checked ? "block" : "none";
 });
 
-// Glow
+//Glow
 document.getElementById("toggleGlow").addEventListener("change", (e) => {
   document.body.classList.toggle("glow-mode", e.target.checked);
 });
 
-// Gradient
+//Gradient
 document.getElementById("toggleGradient").addEventListener("change", (e) => {
   document.body.classList.toggle("gradient-mode", e.target.checked);
 });
-// Light Trail
+//Light Trail
 document.getElementById("toggleTrail").addEventListener("change", (e) => {
   window.lightTrailEnabled = e.target.checked;
 });
