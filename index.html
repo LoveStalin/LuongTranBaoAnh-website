@@ -1315,7 +1315,11 @@ document.addEventListener("touchmove", (e) => {
 ///3D gyro
 window.tiltEnabled = true;
 
+<<<<<<< HEAD
 // ----- ĐIỀU CHỈNH GYRO -----
+=======
+// ----- HANDLE GYRO -----
+>>>>>>> ce84bebc9a3c04fa1d1991342fa25b1d1530882a
 function handleGyro(e) {
   if (!window.tiltEnabled) return;
 
@@ -1334,7 +1338,11 @@ function handleGyro(e) {
   });
 }
 
+<<<<<<< HEAD
 // ----- KÍCH HOẠT GYRO -----
+=======
+// ----- ENABLE GYRO -----
+>>>>>>> ce84bebc9a3c04fa1d1991342fa25b1d1530882a
 function enableGyro() {
   const btn = document.getElementById("enableGyroBtn");
 
@@ -1361,10 +1369,17 @@ function enableGyro() {
   });
 }
 
+<<<<<<< HEAD
 //Gọi hàm Gyro
 enableGyro();
 
 //-----TOGGLE TILT-----
+=======
+// Gọi hàm
+enableGyro();
+
+// ----- TOGGLE TILT -----
+>>>>>>> ce84bebc9a3c04fa1d1991342fa25b1d1530882a
 document.getElementById("toggleTilt").addEventListener("change", (e) => {
   window.tiltEnabled = e.target.checked;
 
@@ -1374,7 +1389,10 @@ document.getElementById("toggleTilt").addEventListener("change", (e) => {
     });
   }
 });
+<<<<<<< HEAD
 ///Setting Panels
+=======
+>>>>>>> ce84bebc9a3c04fa1d1991342fa25b1d1530882a
 const settingsPanel = document.getElementById("settingsPanel");
 const openSettings = document.getElementById("openSettings");
 openSettings.addEventListener("click", () => {
