@@ -1334,8 +1334,8 @@ function handleGyro(e) {
   x = Math.max(-30, Math.min(30, x));
   y = Math.max(-30, Math.min(30, y));
 
-  const tiltX = x / 6;
-  const tiltY = y / 6;
+  const tiltX = x / 2;
+  const tiltY = y / 2;
 
   document.querySelectorAll(".card").forEach(card => {
     card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
