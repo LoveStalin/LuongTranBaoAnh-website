@@ -60,15 +60,6 @@
       Thật ra… tớ thấy Bảo Anh rất đáng yêu và xinh.
       Không cần đồng ý,từ chối,trả lời và bình luận gì cả...  
       Tớ chỉ muốn cậu biết điều rằng...Có người đang thích thầm cậu để phát triển💕" class="secret-text">
-      Tớ không dám nói ra vì tớ ngại và tớ thấy bản thân chưa đáp ứng được tiêu chí của cậu
-      <br>
-      Nên tớ để vào đây vậy 🫩
-      <br><br>
-      Thật ra… tớ thấy Bảo Anh rất đáng yêu và xinh.
-      <br>
-      Không cần đồng ý,từ chối,trả lời và bình luận gì cả...  
-      <br>
-      Tớ chỉ muốn cậu biết điều rằng...Có người đang thích thầm cậu để phát triển💕
     </p>
     <button id="secret-close">Đóng lại</button>
   </div>
@@ -107,23 +98,24 @@
           <div class="photo">Ảnh3</div>
         </div>
       </section>
-<!-- ===================== SECRET MESSAGE CARD (GIAO DIỆN ) ===================== -->
-<section id="secret-section" class="secret-section">
-  <div class="secret-card">
-    <h2>💌 Viết lời nhắn mà Bảo Anh muốn gửi tới Người bí ẩn </h2>
+     <!-- COMMENT CARD -->
+<div id="comment-section" class="card">
 
-    <input id="senderName" type="text" placeholder="Tên bạn (để trống nếu muốn ẩn danh)" />
+  <h3 class="card-title">💬 Viết lời nhắn mà Bảo Anh muốn gửi tới người bí ẩn 💬</h3>
 
-    <textarea id="secretInput" placeholder="Viết lời nhắn tại đây..." rows="4"></textarea>
+  <input type="text" id="comment-name" placeholder="Tên bạn (hoặc để trống nếu ẩn danh)"
+         class="comment-input">
 
-    <div class="secret-actions">
-      <button id="sendSecretBtn" class="btn primary">Gửi 💌</button>
-      <span id="secretMsgStatus" class="status"></span>
-    </div>
+  <textarea id="comment-message" rows="4"
+            placeholder="Viết lời nhắn tại đây…"
+            class="comment-input"></textarea>
 
-    <div id="threadBox" class="thread-box"></div>
-  </div>
-</section>
+  <button onclick="postComment()" class=".comment-btn">
+    Gửi 💌
+  </button>
+
+  <div id="comment-list" class="comment-list"></div>
+</div>
       <section id="wishes" class="card">
         <h3>Wishes Generator</h3>
         <p>Bấm nút để tạo vài lời chúc cute auto.</p>
@@ -174,10 +166,6 @@
   <label><input type="checkbox" id="toggleTilt" checked> 3D Tilt Cards</label>
 </div>
 <button id="openSettings">⚙️</button>
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>
-  eruda.init();
-</script>
 </body>
   <style>
    /* styles.css — aesthetic: pastel + playful */
@@ -467,13 +455,12 @@ main{max-width:1100px;margin:18px auto;display:grid;grid-template-columns:1fr;ga
   width: 250px;
   height: 250px;
   border-radius: 10px;
-}
 /* messages */
 .msgs{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .msg{padding:10px;border-radius:10px;background:linear-gradient(90deg,#c22c77,#c22c77);border:1px solid rgba(0,0,0,0.03)}
 .msg-form{display:flex;gap:8px;margin-top:10px}
 .msg-form input{flex:1;padding:10px;border-radius:10px;border:1px solid #eee}
-
+}
 /* gallery */
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
 .photo{height:100px;border-radius:10px;background:linear-gradient(90deg,#fff,#fff7fb);display:flex;align-items:center;justify-content:center;border:2px dashed #ffe6f2;color:#ff6b9a;font-weight:700}
@@ -830,76 +817,60 @@ button {
     opacity: 0;
   }
 }
-/* secret card style - giao diện B (mới, pink/purple theme) */
-.secret-section { width:100%; display:flex; justify-content:center; margin:30px 0; }
-.secret-card {
-  width: 900px;
-  max-width: 95%;
-  background: linear-gradient(180deg, rgba(36,6,20,0.9), rgba(45,6,40,0.95));
+/* INPUT + TEXTAREA */
+.comment-input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid #ff9dcf;
+  background: rgba(255,255,255,0.15);
   color: #fff;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255, 80, 160, 0.08);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  outline: none;
+  font-size: 14px;
 }
-.secret-card h2 { text-align:center; color:#ffdbe9; margin-bottom:12px; font-size:20px; }
-.secret-card input, .secret-card textarea {
-  width:100%; border-radius:10px; padding:12px; margin:8px 0; border:1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02); color:#fff; font-size:14px;
+
+/* BUTTON */
+.comment-btn {
+  margin-top: 10px;
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #ff69b4, #ff8ad6);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
 }
-.secret-card textarea { min-height:90px; resize:vertical; }
-.secret-actions { display:flex; align-items:center; gap:12px; margin-top:8px; }
-.btn { padding:10px 14px; border-radius:10px; cursor:pointer; border:none; font-weight:600; }
-.btn.primary { background: linear-gradient(90deg,#ff5aa8,#ff9ad6); color:#fff; box-shadow: 0 6px 18px rgba(255,90,150,0.18); }
-.status { font-size:13px; color:#ffdbe9; }
 
-/* thread */
-.thread-box { margin-top:16px; max-height:360px; overflow:auto; padding:8px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:10px; }
-.msg-item { background: rgba(255,255,255,0.03); border-radius:10px; padding:10px; margin-bottom:10px; border:1px solid rgba(255,80,160,0.06); }
-.msg-meta { display:flex; align-items:center; gap:8px; font-size:13px; color:#ffdbe9; margin-bottom:6px; }
-.msg-body { color:#fff; white-space:pre-wrap; line-height:1.4; font-size:14px; }
-.msg-actions { margin-top:8px; }
-.btn.reply { padding:6px 8px; background:transparent; border:1px solid rgba(255,255,255,0.06); color:#ffdbe9; border-radius:8px; cursor:pointer; font-size:13px; }
+.comment-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #ff8ad6;
+}
+/* LIST COMMENT */
+.comment-list {
+  margin-top: 25px;
+  text-align: left;
+}
 
-.reply-box { margin-top:8px; display:flex; gap:8px; }
-.reply-box textarea { flex:1; min-height:56px; }
-.reply-bubble { margin-left:18px; margin-top:8px; background: linear-gradient(90deg,#ffdce9,#ffeef7); color:#2a001b; padding:8px 10px; border-radius:10px; border:1px solid rgba(255,80,160,0.08); }
-
-/* nested replies indent */
-.reply-list { margin-top:8px; padding-left:14px; }
-.small-time { font-size:12px; color:rgba(255,255,255,0.6); margin-left:6px; }
-
-/* responsive */
-@media (max-width:600px) {
-  .secret-card { padding:16px; }
-  .thread-box { max-height:320px; }
+/* ANIMATION */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 </style>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBLbu6sJlpL0Y3sBd7d96SPY7HS7BRa6oo",
-    authDomain: "bao-anh-website.firebaseapp.com",
-    projectId: "bao-anh-website",
-    storageBucket: "bao-anh-website.firebasestorage.app",
-    messagingSenderId: "96683625532",
-    appId: "1:96683625532:web:8dfb7986e1b62f2118c739"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
-<script>
-   emailjs.init("TQlySfcn_IUPSdTXU");
-</script>
  <script>
+  // Đánh thức server trước để tránh delay gửi comment
+fetch("https://comment-cho-baoanh.onrender.com/")
+  .then(() => console.log("Server sẵn sàng"))
+  .catch(() => console.log("Đang đánh thức server..."));
+ window.onload = function () {
+  // Gọi render comment
+  renderComments();
+
+  // Cuộn đến khung comment
+  window.scrollTo({ top: document.getElementById("comment-list").offsetTop, behavior: "smooth" });
+ }
   // Password
 const passwordScreen = document.getElementById('password-screen');
 const passField = document.getElementById('pass-field');
@@ -1516,200 +1487,128 @@ document.querySelectorAll("button").forEach(btn => {
     setTimeout(() => circle.remove(), 600);
   });
 });
-/* ========== 3) OWNER DISPLAY NAME ========== */
-const OWNER_NAME = "Con rể tương lai của mẹ Hằng";
+function postComment() {
+  const name = document.getElementById("comment-name").value.trim() || "Ẩn danh";
+  const message = document.getElementById("comment-message").value.trim();
 
-/* ========== 4) HELPERS ========== */
-function escapeHtml(s) {
-  if (!s) return "";
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-}
-function formatTime(ts) {
-  try {
-    const d = new Date(ts);
-    return d.toLocaleString();
-  } catch(e) { return ""; }
-}
-
-/* ========== 5) SEND MESSAGE (Bảo Anh gửi) ========== */
-const sendBtn = document.getElementById("sendSecretBtn");
-const inputEl = document.getElementById("secretInput");
-const nameEl = document.getElementById("senderName");
-const statusEl = document.getElementById("secretMsgStatus");
-const threadBox = document.getElementById("threadBox");
-
-sendBtn.addEventListener("click", async () => {
-  const raw = inputEl.value.trim();
-  const providedName = (nameEl.value || "").trim();
-  const senderName = providedName || "Ẩn danh";
-  if (!raw) {
-    statusEl.style.color = "#ff9abf";
-    statusEl.innerText = "Ghi vài chữ đi bro!";
+  if (!message) {
+    alert("Bạn chưa nhập lời nhắn!");
     return;
   }
 
-  sendBtn.disabled = true;
-  statusEl.style.color = "#ffdbe9";
-  statusEl.innerText = "Đang gửi...";
-
-  try {
-    // store root message (parentId = null)
-    await db.collection("baoanh_messages").add({
-      message: raw,
-      sender: "baoanh",           // web visitor
-      name: senderName,
-      parentId: null,
-      time: Date.now()
+  fetch("https://comment-cho-baoanh.onrender.com/comments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, message })
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("Gửi thất bại");
+      return response.json();
+    })
+    .then(() => {
+      document.getElementById("comment-name").value = "";
+      document.getElementById("comment-message").value = "";
+      renderComments();
+    })
+    .catch(error => {
+      alert("Lỗi khi gửi lời nhắn 😭: " + error.message);
     });
-
-    // send email to owner via EmailJS (so owner gets notified privately)
-    // NOTE: create EmailJS service+template and put IDs below.
-    // Template fields: from_name, message
-    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-      from_name: senderName,
-      message: raw
-    }).then(function(){
-      console.log("EmailJS sent.");
-    }, function(err){
-      console.error("EmailJS error:", err);
-    });
-
-    inputEl.value = "";
-    nameEl.value = "";
-    statusEl.style.color = "#9ff3c7";
-    statusEl.innerText = "Gửi thành công! 🎉";
-
-  } catch (err) {
-    console.error(err);
-    statusEl.style.color = "#ff9abf";
-    statusEl.innerText = "Gửi lỗi, thử lại!";
-  } finally {
-    sendBtn.disabled = false;
-    setTimeout(()=> statusEl.innerText = "", 3500);
-  }
-});
-
-/* ========== 6) SEND REPLY (owner or visitor reply to a message) ==========
-   We'll create replies as documents with parentId = id_of_parent_message
-   and sender can be "owner" or "baoanh". Owner replies are posted by UI we include below.
-*/
-async function postReply(parentId, replyText, sender = "owner", replyName = OWNER_NAME) {
-  if (!replyText || !replyText.trim()) return;
-  await db.collection("baoanh_messages").add({
-    message: replyText.trim(),
-    sender: sender,
-    name: replyName,
-    parentId: parentId,
-    time: Date.now()
-  });
 }
 
-/* ========== 7) RENDER THREAD (realtime) ==========
-   We'll listen to all messages and build a map parent->replies for nested display.
-*/
-db.collection("baoanh_messages").orderBy("time","asc")
-.onSnapshot(snapshot => {
-    const docs = [];
-    snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
+function renderComments() {
+  const list = document.getElementById("comment-list");
+  list.innerHTML = "<p>Đang tải lời nhắn...</p>";
 
-    // build map of parent -> children
-    const map = {};
-    docs.forEach(doc => {
-      map[doc.id] = doc;
-      doc.children = [];
+  fetch("https://comment-cho-baoanh.onrender.com/comments")
+    .then(res => res.json())
+    .then(comments => {
+      list.innerHTML = "";
+      comments.forEach((comment, index) => {
+        const commentBox = document.createElement("div");
+        commentBox.style.background = "#fff0f5";
+        commentBox.style.border = "1px solid #ffaec9";
+        commentBox.style.padding = "15px";
+        commentBox.style.marginBottom = "10px";
+        commentBox.style.borderRadius = "12px";
+        commentBox.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
+
+        // Hiện replies (nếu có)
+        let repliesHTML = "";
+        if (comment.replies && comment.replies.length > 0) {
+          repliesHTML = `<div style="margin-top:10px; padding-left:20px;">`;
+          comment.replies.forEach(reply => {
+            repliesHTML += `
+              <div style="margin-bottom:5px;">
+                <strong style="color:#e75480;">↳ ${reply.name}</strong>: ${reply.message}
+              </div>`;
+          });
+          repliesHTML += `</div>`;
+        }
+
+        // HTML hiển thị comment + form trả lời
+        commentBox.innerHTML = `
+          <div style="color: #e75480; font-weight: bold;">${comment.name}</div>
+          <div style="margin-top: 5px;">${comment.message}</div>
+          ${repliesHTML}
+          <button onclick="showReplyBox(${index})" style="margin-top:10px;">💬 Trả lời</button>
+          <div id="reply-box-${index}" style="display:none; margin-top:10px;">
+            <input type="text" id="reply-name-${index}" placeholder="Tên bạn (nếu muốn)" />
+            <input type="text" id="reply-message-${index}" placeholder="Nhập lời phản hồi" />
+            <button onclick="sendReply(${index})">Gửi</button>
+          </div>
+        `;
+        list.appendChild(commentBox);
+      });
+    })
+    .catch(err => {
+      list.innerHTML = "<p>Không thể tải lời nhắn 😢</p>";
+      console.error(err);
     });
-    const roots = [];
-    docs.forEach(doc => {
-      if (doc.parentId) {
-        if (map[doc.parentId]) map[doc.parentId].children.push(doc);
-      } else {
-        roots.push(doc);
-      }
-    });
+}
+function showReplyBox(index) {
+  const box = document.getElementById(`reply-box-${index}`);
+  if (box.style.display === "none") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
+}
+function sendReply(index) {
+  const name = document.getElementById(`reply-name-${index}`).value.trim() || "Ẩn danh";
+  const message = document.getElementById(`reply-message-${index}`).value.trim();
 
-    // render roots and nested replies
-    threadBox.innerHTML = "";
-    roots.reverse().forEach(root => { // show newest first at top
-      const node = renderMessageNode(root);
-      threadBox.appendChild(node);
-    });
-    // scroll to top (newest)
-    threadBox.scrollTop = 0;
-  });
-
-/* node renderer */
-function renderMessageNode(doc) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "msg-item";
-
-  const meta = document.createElement("div");
-  meta.className = "msg-meta";
-  const who = doc.name || (doc.sender === "owner" ? OWNER_NAME : "Ẩn danh");
-  meta.innerHTML = `<strong style="color:#ffdbe9">${escapeHtml(who)}</strong> <span class="small-time">${formatTime(doc.time)}</span>`;
-
-  const body = document.createElement("div");
-  body.className = "msg-body";
-  body.innerHTML = escapeHtml(doc.message);
-
-  const actions = document.createElement("div");
-  actions.className = "msg-actions";
-  const replyBtn = document.createElement("button");
-  replyBtn.className = "btn reply";
-  replyBtn.innerText = "Trả lời";
-  actions.appendChild(replyBtn);
-
-  // reply area (hidden by default)
-  const replyArea = document.createElement("div");
-  replyArea.className = "reply-box";
-  replyArea.style.display = "none";
-  replyArea.innerHTML = `<textarea placeholder="Viết trả lời..." rows="2"></textarea>
-    <button class="btn primary send-reply">Gửi</button>`;
-
-  replyBtn.addEventListener("click", () => {
-    replyArea.style.display = replyArea.style.display === "none" ? "flex" : "none";
-  });
-
-  // handle send reply
-  replyArea.querySelector(".send-reply").addEventListener("click", async () => {
-    const txt = replyArea.querySelector("textarea").value;
-    if (!txt.trim()) return;
-    // If current user is owner, send as owner; otherwise we'll assume owner uses admin UI.
-    // Here we simply post as owner if you are on your admin view. If using same page, it will post with owner name.
-    await postReply(doc.id, txt, "owner", OWNER_NAME);
-    replyArea.querySelector("textarea").value = "";
-    replyArea.style.display = "none";
-  });
-
-  wrapper.appendChild(meta);
-  wrapper.appendChild(body);
-  wrapper.appendChild(actions);
-
-  // render children (replies)
-  if (doc.children && doc.children.length > 0) {
-    const list = document.createElement("div");
-    list.className = "reply-list";
-    doc.children.forEach(child => {
-      const r = document.createElement("div");
-      r.className = "reply-bubble";
-      const rn = child.name || (child.sender === "owner" ? OWNER_NAME : "Ẩn danh");
-      r.innerHTML = `<div style="font-size:13px; font-weight:600; color:#b00666">${escapeHtml(rn)} <span class="small-time">${formatTime(child.time)}</span></div>
-                     <div style="margin-top:6px">${escapeHtml(child.message)}</div>`;
-      list.appendChild(r);
-    });
-    wrapper.appendChild(list);
+  if (!message) {
+    alert("Bạn chưa nhập lời phản hồi!");
+    return;
   }
 
-  return wrapper;
+  fetch(`https://comment-cho-baoanh.onrender.com/comments/${index}/reply`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, message })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Không gửi được phản hồi");
+      return res.json();
+    })
+    .then(() => {
+      // Clear input + ẩn form
+      document.getElementById(`reply-name-${index}`).value = "";
+      document.getElementById(`reply-message-${index}`).value = "";
+      showReplyBox(index); // ẩn lại
+      renderComments(); // load lại comment để hiện phản hồi
+    })
+    .catch(err => {
+      alert("Gửi phản hồi thất bại 😭: " + err.message);
+    });
 }
+  document.getElementById("popup").style.display = "flex";
 
-/* ========== 8) NOTES for deploy/test ==========
- - Replace firebaseConfig values with your project's ones.
- - Create EmailJS account, add a service (Gmail), create a template that uses variables 'from_name' and 'message',
-   then replace YOUR_SERVICE_ID and YOUR_TEMPLATE_ID and YOUR_EMAILJS_PUBLIC_KEY above.
- - EmailJS sends client-side email; the public key is visible in client code (expected).
- - If you want email only for top-level messages, code already sends after storing root (parentId = null).
- - For security, when launching public, tighten Firestore rules; during dev you can use test-mode.
-*/
-</script>
+const formattedMessage = comment.message.replace(/\n/g, "<br>");
+commentBox.innerHTML = `<strong>${comment.name}</strong><br>${formattedMessage}`;
 </script>
 </html>
