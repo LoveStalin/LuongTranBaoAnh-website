@@ -857,6 +857,13 @@ button {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+body.dark .comment-list div {
+  color: #eee;
+}
+
+body.light .comment-list div {
+  color: #222;
+}
 </style>
  <script>
   // Đánh thức server trước để tránh delay gửi comment
@@ -1486,6 +1493,7 @@ document.querySelectorAll("button").forEach(btn => {
     setTimeout(() => circle.remove(), 600);
   });
 });
+// 💬 Comment system
 function postComment() {
   const name = document.getElementById("comment-name").value.trim() || "Ẩn danh";
   const message = document.getElementById("comment-message").value.trim();
@@ -1557,6 +1565,6 @@ function renderComments() {
       list.innerHTML = "<p>Không thể tải lời nhắn 😢</p>";
     });
 }
-
+document.addEventListener("DOMContentLoaded", renderComments);
 </script>
 </html>
