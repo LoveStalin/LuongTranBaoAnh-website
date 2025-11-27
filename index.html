@@ -1518,7 +1518,7 @@ function postComment() {
 }
 function renderComments() {
   const list = document.getElementById("comment-list");
-
+list.innerHTML = "<p>Đang tải lời nhắn...</p>"; 
   fetch("https://comment-cho-baoanh.onrender.com/comments")
     .then(res => res.json())
     .then(comments => {
@@ -1526,6 +1526,12 @@ function renderComments() {
 
       comments.forEach(comment => {
         const commentBox = document.createElement("div");
+        commentBox.style.background = "#fff0f5";
+        commentBox.style.border = "1px solid #ffaec9";
+        commentBox.style.padding = "15px";
+        commentBox.style.marginBottom = "10px";
+        commentBox.style.borderRadius = "12px";
+        commentBox.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
         commentBox.className = "comment-card"; 
         commentBox.dataset.id = comment.id;   // 🔥 RẤT QUAN TRỌNG
 
