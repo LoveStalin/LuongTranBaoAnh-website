@@ -1518,7 +1518,6 @@ function postComment() {
 }
 function renderComments() {
   const list = document.getElementById("comment-list");
-  list.innerHTML = "<p>Đang tải lời nhắn...</p>";
 
   fetch("https://comment-cho-baoanh.onrender.com/comments")
     .then(res => res.json())
@@ -1566,5 +1565,6 @@ function renderComments() {
     });
 }
 document.addEventListener("DOMContentLoaded", renderComments);
+renderComments
 </script>
 </html>
