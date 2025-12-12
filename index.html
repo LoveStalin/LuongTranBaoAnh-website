@@ -102,21 +102,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="msg">Luôn tươi, luôn chill, success trong mọi thứ nhé 🫶</div>
           <div class="msg">Và sẽ mãi là ngoan xinh yêu trong lòng tớ-một người bí ẩn.</div>
         </div>
-        <form id="msg-form" class="msg-form">
-          <input id="msg-input" placeholder="Viết lời chúc..." />
-          <button type="submit" class="btn small">Gửi</button>
-        </form>
-      </section>
-
-      <section id="gallery" class="card">
-        <h3>Ảnh kỉ niệm</h3>
-        <div class="gallery" id="gallery-grid">
-          <!-- placeholders -->
-          <div class="photo">+ Add</div>
-          <div class="photo">Ảnh1</div>
-          <div class="photo">Ảnh2</div>
-          <div class="photo">Ảnh3</div>
-        </div>
       </section>
 <!-- COMMENT CARD -->
 <div id="comment-section" class="card">
@@ -134,7 +119,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Gửi 💌
   </button>
 
-  <div id="comment-list" class="comment-list" style="margin-top: 30px; text-align: left;"></div>
+  <div id="comment-list" class="comment-list"></div>
 </div>
       <section id="wishes" class="card">
         <h3>Wishes Generator</h3>
@@ -671,7 +656,7 @@ footer{text-align:center;margin-top:18px;color:var(--muted)}
   transform: scale(1.1);
 }
 
-/* --- DARK MODE CORE --- */
+/* --- DARK MODE --- */
 body.dark {
   background: linear-gradient(180deg, #18001a, #2d0033 60%, #3c0047);
   color: #ffdfff;
@@ -682,8 +667,7 @@ body.dark {
 body.dark .card,
 body.dark .memory-box,
 body.dark .secret-box,
-body.dark .popup-box,
-body.dark .message-box {
+body.dark .popup-box {
   background: rgba(255, 160, 255, 0.08);
   border: 1px solid rgba(255, 130, 255, 0.3);
   box-shadow: 0 0 18px rgba(255, 100, 255, 0.2);
@@ -848,6 +832,17 @@ button {
   color: #fff;
   outline: none;
   font-size: 14px;
+}
+/* Chữ trong ô nhập chuyển về đen */
+input,
+textarea {
+  color: #000 !important;
+}
+
+/* Placeholder cũng màu xám đậm cho dễ nhìn */
+input::placeholder,
+textarea::placeholder {
+  color: #555 !important;
 }
 /* BUTTON */
 .comment-btn {
@@ -1590,7 +1585,8 @@ list.innerHTML = "<p>Đang tải lời nhắn...</p>";
       list.innerHTML = "<p>Không thể tải lời nhắn 😢</p>";
     });
 }
-document.addEventListener("DOMContentLoaded", renderComments);
-renderComments
+document.addEventListener("DOMContentLoaded",() => { 
+  renderComments();
+});
 </script>
 </html>
