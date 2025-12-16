@@ -1520,26 +1520,34 @@ function postComment() {
 
   fetch("https://comment-cho-baoanh.onrender.com/comments", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ name, message })
   })
-    .then(res => res.json())
+    .then(response => {
+      if (!response.ok) throw new Error("Gửi thất bại");
+      return response.json();
+    })
     .then(() => {
       document.getElementById("comment-name").value = "";
       document.getElementById("comment-message").value = "";
       renderComments();
     })
-    .catch(err => alert("Lỗi khi gửi lời nhắn 😭: " + err.message));
+    .catch(error => {
+      alert("Lỗi khi gửi lời nhắn 😭: " + error.message);
+    });
 }
+
 function renderComments() {
   const list = document.getElementById("comment-list");
-list.innerHTML = "<p>Đang tải lời nhắn...</p>"; 
+  list.innerHTML = "<p>Đang tải lời nhắn...</p>";
+
   fetch("https://comment-cho-baoanh.onrender.com/comments")
     .then(res => res.json())
     .then(comments => {
       list.innerHTML = "";
-
-      comments.forEach(comment => {
+      comments.forEach((comment, index) => {
         const commentBox = document.createElement("div");
         commentBox.style.background = "#fff0f5";
         commentBox.style.border = "1px solid #ffaec9";
@@ -1547,46 +1555,80 @@ list.innerHTML = "<p>Đang tải lời nhắn...</p>";
         commentBox.style.marginBottom = "10px";
         commentBox.style.borderRadius = "12px";
         commentBox.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
-        commentBox.className = "comment-card"; 
-        commentBox.dataset.id = comment.id;   // 🔥 RẤT QUAN TRỌNG
 
-        // hiển thị replies
+        // Hiện replies (nếu có)
         let repliesHTML = "";
-        if (comment.replies?.length > 0) {
-          repliesHTML = `<div style="margin-top:10px; padding-left:20px;">` +
-            comment.replies.map(r =>
-              `<div style="margin-bottom:5px;">
-                <strong style="color:#e75480;">↳ ${r.name}</strong>: ${r.message}
-              </div>`
-            ).join("") +
-          `</div>`;
+        if (comment.replies && comment.replies.length > 0) {
+          repliesHTML = `<div style="margin-top:10px; padding-left:20px;">`;
+          comment.replies.forEach(reply => {
+            repliesHTML += `
+              <div style="margin-bottom:5px;">
+                <strong style="color:#e75480;">↳ ${reply.name}</strong>: ${reply.message}
+              </div>`;
+          });
+          repliesHTML += `</div>`;
         }
-// HTML hiển thị comment + form trả lời
+
+        // HTML hiển thị comment + form trả lời
         commentBox.innerHTML = `
           <div style="color: #e75480; font-weight: bold;">${comment.name}</div>
           <div style="margin-top: 5px;">${comment.message}</div>
           ${repliesHTML}
-
-          <button class="reply-toggle" style="margin-top:10px;">💬 Trả lời</button>
-
-          <div class="reply-box" style="display:none; margin-top:10px;">
-            <input type="text" class="reply-name" placeholder="Tên bạn (nếu muốn)" />
-            <input type="text" class="reply-message" placeholder="Nhập lời phản hồi" />
-            <button class="reply-send">Gửi</button>
+          <button onclick="showReplyBox(${index})" style="margin-top:10px;">💬 Trả lời</button>
+          <div id="reply-box-${index}" style="display:none; margin-top:10px;">
+            <input type="text" id="reply-name-${index}" placeholder="Tên bạn (nếu muốn)" />
+            <input type="text" id="reply-message-${index}" placeholder="Nhập lời phản hồi" />
+            <button onclick="sendReply(${index})">Gửi</button>
           </div>
         `;
-
         list.appendChild(commentBox);
       });
-
-      attachReplyEvents();
     })
-    .catch(() => {
+    .catch(err => {
       list.innerHTML = "<p>Không thể tải lời nhắn 😢</p>";
+      console.error(err);
     });
 }
-document.addEventListener("DOMContentLoaded",() => { 
-  renderComments();
-});
+function showReplyBox(index) {
+  const box = document.getElementById(`reply-box-${index}`);
+  if (box.style.display === "none") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
+}
+function sendReply(index) {
+  const name = document.getElementById(`reply-name-${index}`).value.trim() || "Ẩn danh";
+  const message = document.getElementById(`reply-message-${index}`).value.trim();
+
+  if (!message) {
+    alert("Bạn chưa nhập lời phản hồi!");
+    return;
+  }
+
+  fetch(`https://comment-cho-baoanh.onrender.com/comments/${index}/reply`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, message })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Không gửi được phản hồi");
+      return res.json();
+    })
+    .then(() => {
+      // Clear input + ẩn form
+      document.getElementById(`reply-name-${index}`).value = "";
+      document.getElementById(`reply-message-${index}`).value = "";
+      showReplyBox(index); // ẩn lại
+      renderComments(); // load lại comment để hiện phản hồi
+    })
+    .catch(err => {
+      alert("Gửi phản hồi thất bại 😭: " + err.message);
+    });
+}
+  document.getElementById("popup").style.display = "flex";
+</script>
 </script>
 </html>
